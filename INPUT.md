@@ -10,11 +10,11 @@
 
 This program is written by Matlab. The code solves the time-domain acoustic wave equations in 1D or 2D free space as below:
 
-<p align="center"><img src="https://rawgit.com/jyjeong0890/j_laws/master/svgs/cebcc5a2e56ac88c393c3eb9679a0511.svg?invert_in_darkmode" align=middle width=114.82597499999999pt height=36.953894999999996pt/></p>
-<p align="center"><img src="https://rawgit.com/jyjeong0890/j_laws/master/svgs/1a000c0318d83baf239a8b52238c5be0.svg?invert_in_darkmode" align=middle width=113.70546pt height=36.953894999999996pt/></p>
-<p align="center"><img src="https://rawgit.com/jyjeong0890/j_laws/master/svgs/389b058958e52741efdf2b3dd6e2751a.svg?invert_in_darkmode" align=middle width=204.9135pt height=39.30498pt/></p>
+$$\frac{\partial u_x}{\partial t}+\frac{1}{\rho}\frac{\partial p}{\partial x}=0 $$
+$$\frac{\partial u_y}{\partial t}+\frac{1}{\rho}\frac{\partial p}{\partial y}=0 $$
+$$\frac{\partial p}{\partial t}+\rho c^2 \left( \frac{\partial u_x}{\partial x}+\frac{\partial u_y}{\partial y}\right)=S $$
 
-where, <img src="https://rawgit.com/jyjeong0890/j_laws/master/svgs/6dec54c48a0438a5fcde6053bdb9d712.svg?invert_in_darkmode" align=middle width=8.467140000000004pt height=14.102549999999994pt/> is density, <img src="https://rawgit.com/jyjeong0890/j_laws/master/svgs/3e18a4a28fdee1744e5e3f79d13b9ff6.svg?invert_in_darkmode" align=middle width=7.087278000000003pt height=14.102549999999994pt/> is speed of sound, <img src="https://rawgit.com/jyjeong0890/j_laws/master/svgs/71159c622b6dd4d9514fa185808a9daa.svg?invert_in_darkmode" align=middle width=41.36847pt height=14.102549999999994pt/> is acoustic velocity, <img src="https://rawgit.com/jyjeong0890/j_laws/master/svgs/2ec6e630f199f589a2402fdf3e0289d5.svg?invert_in_darkmode" align=middle width=8.239720500000002pt height=14.102549999999994pt/> is acoustic pressure, and <img src="https://rawgit.com/jyjeong0890/j_laws/master/svgs/e257acd1ccbe7fcb654708f1a866bfe9.svg?invert_in_darkmode" align=middle width=10.986195000000004pt height=22.381919999999983pt/> is source distribution.
+where, $\rho$ is density, $c$ is speed of sound, $u_x, u_y$ is acoustic velocity, $p$ is acoustic pressure, and $S$ is source distribution.
 
 ---
 
@@ -45,22 +45,26 @@ As an input, you can specify the waveform of the perturbation and source. This p
 
 ### 1. Gaussian point pulse: 
 
-<p align="center"><img src="https://rawgit.com/jyjeong0890/j_laws/master/svgs/e606d3f109888fb1b6b88bbed72002e5.svg?invert_in_darkmode" align=middle width=366.29834999999997pt height=35.749725pt/></p>
+$$p(x,y,t=0) = exp \Big( -ln(2)\frac{(x-x_s)^2+(y-y_s)^2}{\sigma^2} \Big)$$
 
 ### 2. Gaussian line pulse: 
 
-<p align="center"><img src="https://rawgit.com/jyjeong0890/j_laws/master/svgs/753a0487aa26e553c566b98fa3ab6992.svg?invert_in_darkmode" align=middle width=266.31329999999997pt height=35.749725pt/></p>
+$$p(x,t=0) = exp \Big( -ln(2)\frac{(x-x_s)^2}{\sigma^2} \Big)$$
 
 ### 3. Gaussian source:
 
-<p align="center"><img src="https://rawgit.com/jyjeong0890/j_laws/master/svgs/b42d4ecf904e1b89f66753a8ddcf9d70.svg?invert_in_darkmode" align=middle width=391.611pt height=35.749725pt/></p>
+$$S(x,y,t) = exp \Big( -ln(2)\frac{(x-x_s)^2+(y-y_s)^2}{\sigma^2} \Big)sin(\omega t)$$
 
 ### 4. Sinusoidal line pulse:
 
-<p align="center"><img src="https://rawgit.com/jyjeong0890/j_laws/master/svgs/1d73eb95ac68670097ed3d33b174aafc.svg?invert_in_darkmode" align=middle width=341.73975pt height=40.01679pt/></p>
-<p align="center"><img src="https://rawgit.com/jyjeong0890/j_laws/master/svgs/949cde19577625b9b80166278fe54444.svg?invert_in_darkmode" align=middle width=69.15777pt height=18.269295pt/></p>
-<p align="center"><img src="https://rawgit.com/jyjeong0890/j_laws/master/svgs/e1f6adfe61b01eed3e434aa3b9ebd1b7.svg?invert_in_darkmode" align=middle width=81.18428999999999pt height=16.376943pt/></p>
-<p align="center"><img src="https://rawgit.com/jyjeong0890/j_laws/master/svgs/f9ec3bf51e57a83467f085a500a6fde0.svg?invert_in_darkmode" align=middle width=58.912259999999996pt height=35.41626pt/></p>
+$$ p(\eta) = \left\{ \begin{array}{ll}
+sin(\omega_c \eta)-0.5sin(2\omega_c \eta) & \textrm{if 0< $\eta<\frac{2\pi}{\omega_c}$}\\
+0 & \textrm{else}
+\end{array} \right.
+$$
+$$p(\eta) \in C^2$$
+$$\eta = t-x/c $$
+$$\omega_c = \frac{2\pi}{t_0}$$
 
 ### 5. User-defined pulse
 
@@ -93,7 +97,7 @@ If you want another input waveform, modify **imposeIC.m**
 - bufferPt=10~12 is recommended.
 ### filterAlpha
 - The free parameter in the spatial low pass filter
-- <img src="https://rawgit.com/jyjeong0890/j_laws/master/svgs/3b99a2f465b8e49015c67363c21d7ae6.svg?invert_in_darkmode" align=middle width=108.867pt height=21.10812pt/>
+- $-0.5<\alpha<0.5$
 - As alpha increase, the spectrum of the transfer function become more steep, and cutoff wavenumber increase.
 - The filter suppresses the high wave components and makes the numerical scheme more dissipative and stable.
 - filteralpha=0.45 is recommended.
@@ -118,10 +122,10 @@ If you want another input waveform, modify **imposeIC.m**
 ### sigma
 - When inputPulseType=1,2, or 3, this parameter is a sigma of Gaussian function.
 ### freq
-- When inputPulseType=3, this parameter is the frequency of the source distribution, <img src="https://rawgit.com/jyjeong0890/j_laws/master/svgs/84eb4977857799600b62204bd5d23a25.svg?invert_in_darkmode" align=middle width=96.6636pt height=24.56552999999997pt/>.
+- When inputPulseType=3, this parameter is the frequency of the source distribution, $\omega=2 \pi (freq)$.
 ### x0, y0
 - When inputPulseType=1,2, or 3, this parameter is the center of the pulse.
 ### initialT0
-- When inputPulseType=4, <p align="center"><img src="https://rawgit.com/jyjeong0890/j_laws/master/svgs/35749166c09da179631c4e9b75193d97.svg?invert_in_darkmode" align=middle width=58.912259999999996pt height=35.41626pt/></p>
+- When inputPulseType=4, $$\omega_c=\frac{2\pi}{T_0}$$
 - In this case, the initial time is not 0, but initialT0
 ---
